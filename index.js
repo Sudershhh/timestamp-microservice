@@ -19,10 +19,31 @@ app.get("/", function (req, res) {
 });
 
 
+
+
 // your first API endpoint... 
 app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
+
+
+app.get("/api/:date", function(req,res){
+
+const parsedDate = new Date(req.params.date).toString()
+console.log(parsedDate)
+
+
+const timestampInSeconds = Math.floor(Date.now(parsedDate)); 
+console.log(timestampInSeconds)
+
+
+const dateInformation = {
+  "unix": timestampInSeconds,
+  "utc" : parsedDate
+}
+
+})
+
 
 
 
