@@ -29,6 +29,7 @@ app.get("/api/hello", function (req, res) {
 
 app.get("/api/",function(req,res)
 {
+
   console.log("EMPTY DATE")
     res.json({
       "unix":Date.now(),
@@ -40,47 +41,32 @@ app.get("/api/",function(req,res)
 app.get("/api/:date", function(req,res){
 
 
-//EMPTY DATE CHECK
-
-// const inputDate = req.params.date
-// if(inputDate.length==0)
-//   {
-//     res.json({
-//       "unix":Date.now(),
-//       "utc": new Date().getTime()
-//     })
-//   }
-
 
 const parsedDate = new Date(req.params.date)
 console.log("PARSED DATE : ", parsedDate)
-//VALID DATE CHECK
-if (Object.prototype.toString.call(parsedDate) === "[object Date]" && isNaN(parsedDate.getTime()) )
+
+
+if(new Date(parseInt(req.params.date)).toString() === "Invalid Date")
   {
-      res.json({error:"Invalid Date"})
-      return
-}
+    res.json({error:"Invalid Date"})
+    return;
+  }
 
 
 
-const stringDate = new Date(req.params.date).toLocaleDateString()
-console.log("STRING DATE : ", stringDate)
-
-console.log("UTC DATE : ", parsedDate.toUTCString())
-
-if(req.params.date.toString().includes("-"))
+if((new Date(parseInt(req.params.date)).getTime() === parseInt(req.params.date) && req.params.date.indexOf("-") === -1 && req.params.date.indexOf(" ") === -1 ))
   {
     res.json({
-      "unix":Date.now(parsedDate),
-      "utc": parsedDate.toUTCString()
+      "unix":parseInt(req.params.date),
+      "utc": new Date(parseInt(req.params.date)).toUTCString()
     })
   }
   else{
-    
     res.json({
-      "unix":req.params.date,
-      "utc": new Date((+req.params.date)/1000).toUTCString()
+      "unix":parsedDate.getTime(),
+      "utc": new Date(parseInt(parsedDate.getTime())).toUTCString()
     })
+
   }
 
 
